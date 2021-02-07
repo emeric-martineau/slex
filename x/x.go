@@ -74,8 +74,8 @@ func ParseParameters(data string, packageName string) (string, error) {
 func filterComment(data string) ([]lexer.Token, error) {
 	tokensList := []lexer.TokenEntry{
 		lexer.NewRegexValueToken("_COMMENT", "(\\s*//.*)", -1),
-		lexer.NewRegexValueToken("_NEWLINE", "(\\r|\\n|\\r\\n)", -1),
-		lexer.NewRegexValueToken("DATA", "(.+)", dataToken),
+		lexer.NewRegexValueToken("_NEWLINE", "(\\r|\\n|(\\r\\n))", -1),
+		lexer.NewRegexValueToken("DATA", "([^\\r\\n]+)", dataToken),
 	}
 
 	return lexer.Lexer(data, tokensList)
@@ -122,7 +122,7 @@ func parseOneLine(token lexer.Token) ([]lexer.Token, error) {
 		lexer.NewHardValueToken("HARD_VALUE", "==", hardValueToken),
 		lexer.NewHardValueToken("REGEX_VALUE", "~=", regexValueToken),
 		lexer.NewHardValueToken("FN_CALL", "=>", functionCallToken),
-		lexer.NewRegexValueToken("DATA", "(.+)", dataToken),
+		lexer.NewRegexValueToken("DATA", "([^\\r\\n]+)", dataToken),
 	}
 
 	return lexer.Lexer(token.Data, tokensList)
@@ -168,6 +168,7 @@ func generateOneLine(tokens []lexer.Token, packageName string) (string, error) {
 		extra = ""
 	case "==":
 		fn = fmt.Sprintf("%sNewHardValueToken", packageName)
+		// TODO escape \
 		value = fmt.Sprintf("\"%s\"", tokens[2].Data)
 		extra = ""
 	case "~=":
@@ -176,6 +177,7 @@ func generateOneLine(tokens []lexer.Token, packageName string) (string, error) {
 
 		if len(datas) == 1 {
 			fn = fmt.Sprintf("%sNewRegexValueToken", packageName)
+			// TODO escape \
 			extra = ""
 		} else if strings.Index(datas[1], "=") == -1 {
 			// Check if = sign is found.
