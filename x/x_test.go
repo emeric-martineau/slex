@@ -34,8 +34,8 @@ _NEWLINE            ~= (\n|\r|\r\n)
 	// TODO add prefix of NewXXX, SubPattern, TokenEntry
 	dataToGet := `[]TokenEntry{
 	NewHardValueToken("NUMBER", "123", NUMBER),
-	NewRegexValueToken("_SPACE", "(\s)", -1),
-	NewRegexValueToken("_NEWLINE", "(\n|\r|\r\n)", -1),
+	NewRegexValueToken("_SPACE", "(\\s)", -1),
+	NewRegexValueToken("_NEWLINE", "(\\n|\\r|\\r\\n)", -1),
 	NewRegexWithSubValueToken("IDENTIFIER", "([a-z]+)", 
 		[]SubPattern{
 			{"MODULE", MODULE, "module"},
@@ -67,11 +67,10 @@ _NEWLINE            ~= (\n|\r|\r\n)
 					   _COMMENT => skipComment	
 		DASH ~= (-+)	countDash
 `
-	// TODO add prefix of NewXXX, SubPattern, TokenEntry
 	dataToGet := `[]x.TokenEntry{
 	x.NewHardValueToken("NUMBER", "123", NUMBER),
-	x.NewRegexValueToken("_SPACE", "(\s)", -1),
-	x.NewRegexValueToken("_NEWLINE", "(\n|\r|\r\n)", -1),
+	x.NewRegexValueToken("_SPACE", "(\\s)", -1),
+	x.NewRegexValueToken("_NEWLINE", "(\\n|\\r|\\r\\n)", -1),
 	x.NewRegexWithSubValueToken("IDENTIFIER", "([a-z]+)", 
 		[]x.SubPattern{
 			{"MODULE", MODULE, "module"},

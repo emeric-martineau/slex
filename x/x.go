@@ -168,16 +168,14 @@ func generateOneLine(tokens []lexer.Token, packageName string) (string, error) {
 		extra = ""
 	case "==":
 		fn = fmt.Sprintf("%sNewHardValueToken", packageName)
-		// TODO escape \
-		value = fmt.Sprintf("\"%s\"", tokens[2].Data)
+		value = fmt.Sprintf("\"%s\"", escapeString(tokens[2].Data))
 		extra = ""
 	case "~=":
 		datas := strings.SplitN(tokens[2].Data, "\t", 2)
-		value = fmt.Sprintf("\"%s\"", datas[0])
+		value = fmt.Sprintf("\"%s\"", escapeString(datas[0]))
 
 		if len(datas) == 1 {
 			fn = fmt.Sprintf("%sNewRegexValueToken", packageName)
-			// TODO escape \
 			extra = ""
 		} else if strings.Index(datas[1], "=") == -1 {
 			// Check if = sign is found.
@@ -246,10 +244,15 @@ func generateSubParameters(tokens []lexer.Token) ([]string, error) {
 			return nil, fmt.Errorf("Syntax error. Missing value of sub parameter '%s'", id)
 		}
 
-		value = tokens[index+1].Data // TODO check if A= without value
+		value = tokens[index+1].Data
 
 		result = append(result, fmt.Sprintf("\t\t\t{\"%s\", %s, \"%s\"},", id, id, value))
 	}
 
 	return result, nil
+}
+
+func escapeString(data string) string {
+	data = strings.Replace(data, "\\", "\\\\", -1)
+	return strings.Replace(data, "\"", "\\\"", -1)
 }
