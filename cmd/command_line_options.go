@@ -62,11 +62,13 @@ func GetCommandLineOptions() cli.App {
 					},
 				},
 				Action: func(c *cli.Context) error {
-					if packageName == "" {
-						packageName = "main"
-					}
+					var data string
 
-					data := strings.Replace(slexTemplate, "package lexer", "package "+packageName, 1)
+					if packageName == "" {
+						data = strings.Replace(slexTemplate, "package lexer", "package main", 1)
+					} else {
+						data = strings.Replace(slexTemplate, "package lexer", "package "+packageName, 1)
+					}
 
 					f, errCreate := os.Create(outputFilename)
 					defer f.Close()
