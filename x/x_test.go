@@ -66,6 +66,7 @@ _NEWLINE            ~= (\n|\r|\r\n)
 					   END=end
 					   _COMMENT => skipComment	
 		DASH ~= (-+)	countDash
+		A_SPACE_OR_QUOTE ~= "([ \"])" countDash
 `
 	dataToGet := `[]x.TokenEntry{
 	x.NewHardValueToken("NUMBER", "123", NUMBER),
@@ -80,6 +81,7 @@ _NEWLINE            ~= (\n|\r|\r\n)
 	),
 	x.NewFunctionCallToken("_COMMENT", skipComment, -1),
 	x.NewRegexWithSubValueFnToken("DASH", "(-+)", countDash, DASH),
+	x.NewRegexWithSubValueFnToken("A_SPACE_OR_QUOTE", "([ \"])", countDash, A_SPACE_OR_QUOTE),
 }
 `
 	dataToWriteInFile, err := ParseParameters(data, "x")

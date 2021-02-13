@@ -16,6 +16,7 @@ package x
 
 import (
 	"fmt"
+	"regexp"
 	"slex/lexer"
 	"strings"
 )
@@ -28,6 +29,8 @@ const (
 	idToken
 	valueToken
 )
+
+var spaceSplitRegex = regexp.MustCompile("\\s")
 
 // ParseParameters convert parameter in file into parameter code
 func ParseParameters(data string, packageName string) (string, error) {
@@ -171,7 +174,7 @@ func generateOneLine(tokens []lexer.Token, packageName string) (string, error) {
 		value = fmt.Sprintf("\"%s\"", escapeString(tokens[2].Data))
 		extra = ""
 	case "~=":
-		datas := strings.SplitN(tokens[2].Data, "\t", 2)
+		datas := splitData(tokens[2].Data)
 		value = fmt.Sprintf("\"%s\"", escapeString(datas[0]))
 
 		if len(datas) == 1 {
@@ -255,4 +258,32 @@ func generateSubParameters(tokens []lexer.Token) ([]string, error) {
 func escapeString(data string) string {
 	data = strings.Replace(data, "\\", "\\\\", -1)
 	return strings.Replace(data, "\"", "\\\"", -1)
+}
+
+func splitData(s string) []string {
+	data := strings.TrimSpace(s)
+
+	if strings.Index(data, `"`) == 0 || strings.Index(data, `'`) == 0 {
+		quoteString, pos := extractQuoteString(data)
+
+		return []string{quoteString, strings.TrimSpace(s[pos+1:])}
+	} else {
+		return spaceSplitRegex.Split(data, 2)
+	}
+}
+
+func extractQuoteString(s string) (string, int) {
+	delimiter := []rune(s)[0]
+	var previousChar rune = ' '
+
+	for pos, char := range s {
+		if pos > 0 && char == delimiter && previousChar != '\\' {
+			data := s[1:pos]
+			return strings.Replace(data, `\`, "", -1), pos
+		}
+
+		previousChar = char
+	}
+
+	return s, 0
 }
