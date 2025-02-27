@@ -18,7 +18,7 @@ IDENTIFIER ~= ([a-z]+)	MODULE=module \
                        END=end
 ```
 
-Each line contain 3 parts.
+Each line contains 3 parts.
 
 First part is the identifier use to link with goyacc. In goyacc file (`*.y`), this is `%token` identifier. If identifier start by `_`, token is ignored.
 
@@ -27,11 +27,11 @@ After, you have the type of token:
  * `=>`: to call a go function to generate a token (see the `skipComment` function in `lexer/lexer_test.go`),
  * `~=`: use a regex
 
-The las part is value.
+The last part is value.
 
 With regex, you can add sub-pattern. For example, you want check if identifier is keyword or something else.
 In this case, after value, you can add function name or couple of identifier/value.
 
-In case of regex, if regex contains space (don't sur that make sense), you can enclose with single-quote or double-quote.
+In case of regex, if regex contains space (don't sure that make sense), you can enclose with single-quote or double-quote.
 
 If line is too long, you can split it by using `\` at end of line.
