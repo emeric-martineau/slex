@@ -121,7 +121,7 @@ func mergeContinueLine(tokens []lexer.Token) ([]lexer.Token, error) {
 func parseOneLine(token lexer.Token) ([]lexer.Token, error) {
 	tokensList := []lexer.TokenEntry{
 		lexer.NewRegexValueToken("_SPACE", "(\\s)", -1),
-		lexer.NewRegexValueToken("IDENTIFIANT", "([a-zA-Z_0-9]+)", idToken),
+		lexer.NewRegexValueToken("IDENTIFIANT", "([a-zA-Z_0-9.]+)", idToken),
 		lexer.NewHardValueToken("HARD_VALUE", "==", hardValueToken),
 		lexer.NewHardValueToken("REGEX_VALUE", "~=", regexValueToken),
 		lexer.NewHardValueToken("FN_CALL", "=>", functionCallToken),

@@ -223,7 +223,7 @@ func Test_Lexer_Token_Not_Found(t *testing.T) {
 		t.Errorf("A token was found! %+v", tokens)
 	}
 
-	if err.Error() != "Invalid token found at 1:1\nttt\n^" {
+	if err.Error() != "invalid token found at 1:1\nttt\n^" {
 		t.Errorf("Wrong error message:'%s'", err.Error())
 	}
 }

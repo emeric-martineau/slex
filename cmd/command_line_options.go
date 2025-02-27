@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -83,7 +82,7 @@ func GetCommandLineOptions() cli.App {
 						return errWrite
 					}
 
-					content, errInputfile := ioutil.ReadFile(inputFilename)
+					content, errInputfile := os.ReadFile(inputFilename)
 
 					if errInputfile != nil {
 						return errInputfile

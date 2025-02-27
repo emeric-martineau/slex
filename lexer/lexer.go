@@ -76,7 +76,7 @@ type TokenEntry struct {
 	m *regexp.Regexp
 }
 
-var endLineRegex = regexp.MustCompile("(\\n|\\r\\n)")
+var endLineRegex = regexp.MustCompile("(\n|\\r\\n)")
 
 // NewHardValueToken create a token to search
 func NewHardValueToken(name string, value string, idValue int) TokenEntry {
@@ -232,7 +232,7 @@ func Lexer(text string, tokensList []TokenEntry) ([]Token, error) {
 
 			errorLog("Lexer", "No token found at %d:%d!\n%s", lineNumber, charPos, errorCode)
 
-			return tokens, fmt.Errorf("Invalid token found at %d:%d\n%s", lineNumber, charPos, errorCode)
+			return tokens, fmt.Errorf("invalid token found at %d:%d\n%s", lineNumber, charPos, errorCode)
 		}
 	}
 

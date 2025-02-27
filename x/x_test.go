@@ -50,7 +50,7 @@ _NEWLINE            ~= (\n|\r|\r\n)
 	dataToWriteInFile, err := ParseParameters(data, "")
 
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Error(err.Error())
 	} else if dataToWriteInFile != dataToGet {
 		t.Errorf("Result not as expected:\n%v", diff.LineDiff(dataToWriteInFile, dataToGet))
 	}
